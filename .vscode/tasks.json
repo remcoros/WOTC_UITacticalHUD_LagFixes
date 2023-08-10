@@ -1,0 +1,59 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "powershell.exe –NonInteractive –ExecutionPolicy Unrestricted -file '${workspaceRoot}\\.scripts\\build.ps1' -srcDirectory '${workspaceRoot}' -sdkPath '${config:xcom.highlander.sdkroot}' -gamePath '${config:xcom.highlander.gameroot}' -config 'default'",
+            "group": "build",
+            "problemMatcher": [
+                {
+                    "owner": "UnrealScript",
+                    "source": "ucc",
+                    "fileLocation": "absolute",
+                    "pattern": {
+                        "line": 2,
+                        "file": 1,
+                        "message": 4,
+                        "kind": "line",
+                        "severity": 3,
+                        "regexp": "^(.*)\\((\\d+)\\) : (.*), (.*)$",                        
+                    }
+                }
+            ]
+        },
+        {
+            "label": "Build debug",
+            "type": "shell",
+            "command": "powershell.exe –NonInteractive –ExecutionPolicy Unrestricted -file '${workspaceRoot}\\.scripts\\build.ps1' -srcDirectory '${workspaceRoot}' -sdkPath '${config:xcom.highlander.sdkroot}' -gamePath '${config:xcom.highlander.gameroot}' -config 'debug'",
+            "group": "build",
+            "problemMatcher": [
+                {
+                    "owner": "UnrealScript",
+                    "source": "ucc",
+                    "fileLocation": "absolute",
+                    "pattern": {
+                        "line": 2,
+                        "file": 1,
+                        "message": 4,
+                        "kind": "line",
+                        "severity": 3,
+                        "regexp": "^(.*)\\((\\d+)\\) : (.*), (.*)$",                        
+                    }
+                }
+            ]
+        },
+        {
+            "label": "Clean",
+            "type": "shell",
+            "command": "powershell.exe –NonInteractive –ExecutionPolicy Unrestricted -file '${workspaceRoot}\\.scripts\\X2ModBuildCommon\\clean.ps1' -modName 'WOTC_UITacticalHUD_LagFixes' -srcDirectory '${workspaceRoot}' -sdkPath '${config:xcom.highlander.sdkroot}' -gamePath '${config:xcom.highlander.gameroot}'",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Full rebuild",
+            "dependsOrder": "sequence",
+            "dependsOn": ["Clean", "Build"]
+        }
+    ]
+}

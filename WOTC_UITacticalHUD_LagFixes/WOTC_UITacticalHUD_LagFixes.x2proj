@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Default" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Guid>8484d464-3155-4d6d-8404-0ca57f68a9b5</Guid>
+    <Name>WOTC_UITacticalHUD_LagFixes</Name>
+    <Description>Tactical HUD Lag Fixes, a collection of performance improvements to the Tactical HUD</Description>
+    <SteamPublishID>0</SteamPublishID>
+    <AssemblyName>WOTC_UITacticalHUD_LagFixes</AssemblyName>
+    <RootNamespace>WOTC_UITacticalHUD_LagFixes</RootNamespace>
+    <ProjectGuid>{15eedf26-d8e9-4b81-83bf-916c2b908320}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SolutionRoot>$(MSBuildProjectDirectory)\..\</SolutionRoot>
+    <ScriptsDir>$(SolutionRoot).scripts\\</ScriptsDir>
+    <BuildCommonRoot>$(ScriptsDir)X2ModBuildCommon\</BuildCommonRoot>
+  </PropertyGroup>
+  <Import Project="$(BuildCommonRoot)XCOM2.targets" />
+  <ItemGroup>
+    <Folder Include="Config\" />
+    <Folder Include="Src\" />
+    <Folder Include="Src\WOTC_UITacticalHUD_LagFixes\" />
+    <Folder Include="Src\WOTC_UITacticalHUD_LagFixes\Classes\" />
+    <Content Include="Config\XComEditor.ini">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Config\XComEngine.ini">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Config\XComGame.ini">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Config\XComRustyCounter_Defaults.ini">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="ReadMe.txt" />
+    <Content Include="ModPreview.jpg" />
+    <Content Include="ContentOptions.json" />
+    <Content Include="Src\ModConfigMenuAPI\Classes\MCM_API.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\ModConfigMenuAPI\Classes\MCM_API_Button.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\ModConfigMenuAPI\Classes\MCM_API_Checkbox.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\ModConfigMenuAPI\Classes\MCM_API_Dropdown.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\ModConfigMenuAPI\Classes\MCM_API_Instance.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\ModConfigMenuAPI\Classes\MCM_API_Label.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\ModConfigMenuAPI\Classes\MCM_API_Setting.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\ModConfigMenuAPI\Classes\MCM_API_SettingsGroup.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\ModConfigMenuAPI\Classes\MCM_API_SettingsPage.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\ModConfigMenuAPI\Classes\MCM_API_Slider.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\ModConfigMenuAPI\Classes\MCM_API_Spinner.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\ModConfigMenuAPI\MCM_API_CfgHelpers.uci">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\ModConfigMenuAPI\MCM_API_Includes.uci">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\WOTC_UITacticalHUD_LagFixes\Classes\RustyCounter.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\WOTC_UITacticalHUD_LagFixes\Classes\RustyCounter_Settings.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\WOTC_UITacticalHUD_LagFixes\Classes\RustyCounter_Settings_Defaults.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\WOTC_UITacticalHUD_LagFixes\Classes\RustyCounter_Settings_Listener.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\WOTC_UITacticalHUD_LagFixes\Classes\RustyCounter_UI.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\WOTC_UITacticalHUD_LagFixes\Classes\RustyCounter_Utils.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\WOTC_UITacticalHUD_LagFixes\Classes\UISL_Shell_RustyTacCounter.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Src\WOTC_UITacticalHUD_LagFixes\Classes\X2DownloadableContentInfo_WOTC_UITacticalHUD_LagFixes.uc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="LICENSE.txt" />
+    <Content Include="WOTC_UITacticalHUD_LagFixes.XComMod" />
+    <Content Include="Config\XComWOTCTacticalHUDLagFixes_Defaults.ini" />
+    <Content Include="Config\XComWOTC_EnemyPreview_Extended.ini" />
+    <Content Include="Src\WOTC_UITacticalHUD_LagFixes\Classes\UIObjectiveList_Ex.uc" />
+    <Content Include="Src\WOTC_UITacticalHUD_LagFixes\Classes\UITacticalHUD_AbilityContainer_Ex.uc" />
+    <Content Include="Src\WOTC_UITacticalHUD_LagFixes\Classes\UITacticalHUD_Countdown_Ex.uc" />
+    <Content Include="Src\WOTC_UITacticalHUD_LagFixes\Classes\UITacticalHUD_Enemies_Ex.uc" />
+  </ItemGroup>
+</Project>

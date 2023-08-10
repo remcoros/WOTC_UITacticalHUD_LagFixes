@@ -1,0 +1,5 @@
+﻿[mod]
+publishedFileId=0
+Title=Tactical HUD Lag Fixes
+Description=Tactical HUD Lag Fixes, a collection of performance improvements to the Tactical HUD
+RequiresXPACK=true
