@@ -1,4 +1,4 @@
-class UITacticalHUD_Enemies_Ex extends UITacticalHUD_Enemies config(WOTC_UITacticalHUD_LagFixes_Settings);
+class UITacticalHUD_Enemies_Ex extends UITacticalHUD_Enemies;
 
 // For 'Extended Information!'
 `include(WOTC_UITacticalHUD_LagFixes\Src\ModConfigMenuAPI\MCM_API_CfgHelpers.uci)
@@ -25,7 +25,7 @@ simulated function OnInit()
 	local X2EventManager EventManager;
 	local Object ThisObj;
 
-	// skip the OnInit of UITacticalHUD_Enemies, we still need to call UIPanel.OnInit
+	// skip the OnInit of UITacticalHUD_Enemies, but we still need to call UIPanel.OnInit
 	super(UIPanel).OnInit();
 
 	`XCOMVISUALIZATIONMGR.RegisterObserver(self);
@@ -46,6 +46,7 @@ simulated function OnInit()
 	if(!Movie.IsMouseActive())
 		InitNavHelp();
 	
+	// Cached check if 'Extended Information!' is installed
 	bEnableEnemyPreviewExtended = class'Utils'.static.IsModInstalled("WOTC_DisplayHitChance");
 }
 
@@ -108,21 +109,25 @@ simulated function RealizeTargets(int HistoryIndex, bool bDontRefreshVisibleEnem
 		LastRealizedIndex = HistoryIndex;
 	}
 
-	//  update the abilities array - otherwise when the enemy heads get sorted by hit chance, the cached abilities those functions use could be out of date
-	// AbilityContainer = XComPresentationLayer(Movie.Pres).GetTacticalHUD().m_kAbilityHUD;
-	// AbilityContainer_Ex = UITacticalHUD_AbilityContainer_Ex(AbilityContainer);
-	// if (AbilityContainer_Ex != none)
-	// {
-	// 	`log("UITacticalHUD_Enemies_Ex > RealizeTargets using UITacticalHUD_AbilityContainer_Ex");
-	// 	AbilityContainer_Ex.UpdateAbilitiesArrayFromHistory(HistoryIndex);
-	// }
-	// else
-	// {
-	// 	`log("UITacticalHUD_Enemies_Ex > RealizeTargets using UITacticalHUD_AbilityContainer");
-	// 	AbilityContainer.UpdateAbilitiesArray();
-	// }
+	// Update the abilities array - otherwise when the enemy heads get sorted by hit chance, the cached abilities those functions use could be out of date
+	AbilityContainer = XComPresentationLayer(Movie.Pres).GetTacticalHUD().m_kAbilityHUD;
+	
+	// Check if our MCO is active and use optimized function, else use regular UpdateAbilitiesArray
+	AbilityContainer_Ex = UITacticalHUD_AbilityContainer_Ex(AbilityContainer);
+	if (AbilityContainer_Ex != none)
+	{
+		AbilityContainer_Ex.UpdateAbilitiesArrayFromHistory(HistoryIndex);
+	}
+	else
+	{
+		AbilityContainer.UpdateAbilitiesArray();
+	}
 
-	UpdateAbilitiesArrayWithoutUI();
+	// ExitSign: Just don't update the UI at all here, not sure about the MoveDown calls
+	// disabled for now, as this seems to not update other ui elements properly
+	// UpdateAbilitiesArrayWithoutUI();
+
+	// ExitSign: don't know why this is needed here, but it is done in base also, so keeping it for now
 	XComPresentationLayer(Movie.Pres).GetTacticalHUD().m_kEnemyTargets.MC.FunctionVoid("MoveDown");
 	XComPresentationLayer(Movie.Pres).GetTacticalHUD().m_kEnemyPreview.MC.FunctionVoid("MoveDownPreview");
 
@@ -134,7 +139,8 @@ simulated function RealizeTargets(int HistoryIndex, bool bDontRefreshVisibleEnem
 }
 
 // Very ugly hack to update m_arrAbilities of UITacticalHUD_AbilityContainer without all the UI updates,
-// we need to do this before 'UpdateVisibleEnemies', because that uses the currently selected ability in its hitchance calculations
+// we need to do this before 'UpdateVisibleEnemies', because that uses the currently selected ability in 
+// its hitchance calculations, which relies on m_arrAbilities to be in order.
 private function UpdateAbilitiesArrayWithoutUI() 
 {
 	local int i, len;
@@ -168,6 +174,7 @@ private function UpdateAbilitiesArrayWithoutUI()
 	AbilityContainer.m_arrAbilities.Sort(AbilityContainer.SortAbilities);
 }
 
+// The same implementation as super, but it uses cached values for sorting
 simulated function UpdateVisibleEnemies(int HistoryIndex)
 {
 	local XGUnit kActiveUnit;
@@ -340,6 +347,7 @@ simulated function int GetHitChanceForObjectRefExtended(StateObjectReference Tar
 	return -1;
 }
 
+// For 'Extended Information!'
 `MCM_CH_VersionChecker(class'MCM_Defaults'.default.VERSION, class'WOTC_DisplayHitChance_MCMScreen'.default.CONFIG_VERSION)
 
 function bool GetTH_AIM_ASSIST() {
