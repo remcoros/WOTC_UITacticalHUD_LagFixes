@@ -24,6 +24,8 @@ Various performance fixes in the Tactical HUD:
 
 [h1]Compatibility[/h1]
 
+[b]Safe to add and remove mid-campaign. Safe to add and remove from a tactical save.[/b]
+
 This mod has [b]Mod Class Overrides[/b] for the following classes:
 
 [list]
