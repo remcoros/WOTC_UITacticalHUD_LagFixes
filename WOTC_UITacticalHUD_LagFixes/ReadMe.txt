@@ -14,7 +14,6 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=3018494559
 [h1]Tactical HUD Lag Fixes - for War of the Chosen[/h1]
 
 Various performance fixes in the Tactical HUD:
-
 [list]
 [*] Greatly reduce number of ability array refreshes while visualizations are running. Huge cause of frame stutters, especially noticable when also using the 'Cost Based Ability Colors' mod.
 [*] Cache hitchance calculations before sorting them, reducing the number of needed calculations even further.
@@ -24,10 +23,9 @@ Various performance fixes in the Tactical HUD:
 
 [h1]Compatibility[/h1]
 
-[b]Safe to add and remove mid-campaign. Safe to add and remove from a tactical save.[/b]
+[b]** Safe to add/remove mid-campaign. Safe to add/remove from a tactical save. **[/b]
 
 This mod has [b]Mod Class Overrides[/b] for the following classes:
-
 [list]
 [*] UITacticalHUD_Enemies
 [*] UITacticalHUD_AbilityContainer
@@ -40,7 +38,6 @@ All mods that use the same [b]Mod Class Override[/b] are incompatible, except fo
 [h2]Using 'WOTC - Extended Information!'? [b]READ THIS:[/b][/h2]
 
 You [b]MUST[/b] disable one of the ModClassOverrides of 'Extended Information!'. This mod automatically detects if you are using 'Extended Information!' and also uses its MCM config settings.
-
 [list]
 [*] Find the XComEngine.ini file for 'Extended Information!' (steamapps\workshop\content\268500\1183444470\Config\XComEngine.ini).
 [*] Find the line [b]+ModClassOverrides=(BaseGameClass="UITacticalHUD_Enemies", ModClass="UITacticalHUD_Enemies_HitChance")[/b]
@@ -50,7 +47,6 @@ You [b]MUST[/b] disable one of the ModClassOverrides of 'Extended Information!'.
 [h2]Using '[WOTC] Unlimited Ability Icons'? [b]READ THIS:[/b][/h2]
 
 You [b]MUST[/b] disable one of the ModClassOverrides of '[WOTC] Tactical HUD Lag Fixes'. Because 'Unlimited Ability Icons' uses the same MCO as this mod.
-
 [list]
 [*] Find the XComEngine.ini file for '[WOTC] Tactical HUD Lag Fixes' (steamapps\workshop\content\268500\3018494559\Config\XComEngine.ini).
 [*] Find the line [b]+ModClassOverrides=(BaseGameClass="UITacticalHUD_AbilityContainer", ModClass="UITacticalHUD_AbilityContainer_Ex")[/b]
