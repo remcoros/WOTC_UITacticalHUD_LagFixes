@@ -109,19 +109,20 @@ simulated function RealizeTargets(int HistoryIndex, bool bDontRefreshVisibleEnem
 	}
 
 	//  update the abilities array - otherwise when the enemy heads get sorted by hit chance, the cached abilities those functions use could be out of date
-	AbilityContainer = XComPresentationLayer(Movie.Pres).GetTacticalHUD().m_kAbilityHUD;
-	AbilityContainer_Ex = UITacticalHUD_AbilityContainer_Ex(AbilityContainer);
-	if (AbilityContainer_Ex != none)
-	{
-		`log("UITacticalHUD_Enemies_Ex > RealizeTargets using UITacticalHUD_AbilityContainer_Ex");
-		AbilityContainer_Ex.UpdateAbilitiesArrayFromHistory(HistoryIndex);
-	}
-	else
-	{
-		`log("UITacticalHUD_Enemies_Ex > RealizeTargets using UITacticalHUD_AbilityContainer");
-		AbilityContainer.UpdateAbilitiesArray();
-	}
-	
+	// AbilityContainer = XComPresentationLayer(Movie.Pres).GetTacticalHUD().m_kAbilityHUD;
+	// AbilityContainer_Ex = UITacticalHUD_AbilityContainer_Ex(AbilityContainer);
+	// if (AbilityContainer_Ex != none)
+	// {
+	// 	`log("UITacticalHUD_Enemies_Ex > RealizeTargets using UITacticalHUD_AbilityContainer_Ex");
+	// 	AbilityContainer_Ex.UpdateAbilitiesArrayFromHistory(HistoryIndex);
+	// }
+	// else
+	// {
+	// 	`log("UITacticalHUD_Enemies_Ex > RealizeTargets using UITacticalHUD_AbilityContainer");
+	// 	AbilityContainer.UpdateAbilitiesArray();
+	// }
+
+	UpdateAbilitiesArrayWithoutUI();
 	XComPresentationLayer(Movie.Pres).GetTacticalHUD().m_kEnemyTargets.MC.FunctionVoid("MoveDown");
 	XComPresentationLayer(Movie.Pres).GetTacticalHUD().m_kEnemyPreview.MC.FunctionVoid("MoveDownPreview");
 
@@ -130,6 +131,41 @@ simulated function RealizeTargets(int HistoryIndex, bool bDontRefreshVisibleEnem
 	{
 		UpdateVisibleEnemies(HistoryIndex);
 	}
+}
+
+// Very ugly hack to update m_arrAbilities of UITacticalHUD_AbilityContainer without all the UI updates,
+// we need to do this before 'UpdateVisibleEnemies', because that uses the currently selected ability in its hitchance calculations
+private function UpdateAbilitiesArrayWithoutUI() 
+{
+	local int i, len;
+	local X2GameRuleset Ruleset;
+	local GameRulesCache_Unit UnitInfoCache;
+	local AvailableAction AbilityAvailableInfo;
+	local UITacticalHUD_AbilityContainer AbilityContainer;
+
+	AbilityContainer = XComPresentationLayer(Movie.Pres).GetTacticalHUD().m_kAbilityHUD;
+
+	//Clear out the array 
+	AbilityContainer.m_arrAbilities.Length = 0;
+
+	// Loop through all abilities.
+	Ruleset = `XCOMGAME.GameRuleset;
+	Ruleset.GetGameRulesCache_Unit(XComTacticalController(PC).GetActiveUnitStateRef(), UnitInfoCache);
+
+	len = UnitInfoCache.AvailableActions.Length;
+	for(i = 0; i < len; ++i)
+	{	
+		// Obtain unit's ability.
+		AbilityAvailableInfo = UnitInfoCache.AvailableActions[i];
+
+		if(AbilityContainer.ShouldShowAbilityIcon(AbilityAvailableInfo))
+		{
+			//Add to our list of abilities 
+			AbilityContainer.m_arrAbilities.AddItem(AbilityAvailableInfo);
+		}
+	}
+
+	AbilityContainer.m_arrAbilities.Sort(AbilityContainer.SortAbilities);
 }
 
 simulated function UpdateVisibleEnemies(int HistoryIndex)
