@@ -8,8 +8,6 @@ event OnVisualizationBlockComplete(XComGameState AssociatedGameState)
 	local int spawningStates;
 	local bool ForceShowReinforcementsAlert;
 	
-    `log("UIObjectiveList_Ex > OnVisualizationBlockComplete " $ AssociatedGameState.HistoryIndex);
-
 	//Exit early if the state being passed in is older than our latest sync'd state
 	if (AssociatedGameState.HistoryIndex <= SyncedToState || !AssociatedGameState.GetContext().bLastEventInChain)
 	{
