@@ -91,6 +91,9 @@ event OnActiveUnitChanged(XComGameState_Unit NewActiveUnit)
 
 simulated function RealizeTargets(int HistoryIndex, bool bDontRefreshVisibleEnemies = false)
 {
+	local UITacticalHUD_AbilityContainer AbilityContainer;
+	local UITacticalHUD_AbilityContainer_Ex AbilityContainer_Ex;
+	
 	if (HistoryIndex == -1)		//	force an update no matter what (e.g. if we switched units, we could realize the same index)
 	{
 		LastRealizedIndex = `XCOMHISTORY.GetCurrentHistoryIndex();
@@ -106,7 +109,19 @@ simulated function RealizeTargets(int HistoryIndex, bool bDontRefreshVisibleEnem
 	}
 
 	//  update the abilities array - otherwise when the enemy heads get sorted by hit chance, the cached abilities those functions use could be out of date
-	UITacticalHUD_AbilityContainer_Ex(XComPresentationLayer(Movie.Pres).GetTacticalHUD().m_kAbilityHUD).UpdateAbilitiesArrayFromHistory(HistoryIndex);
+	AbilityContainer = XComPresentationLayer(Movie.Pres).GetTacticalHUD().m_kAbilityHUD;
+	AbilityContainer_Ex = UITacticalHUD_AbilityContainer_Ex(AbilityContainer);
+	if (AbilityContainer_Ex != none)
+	{
+		`log("UITacticalHUD_Enemies_Ex > RealizeTargets using UITacticalHUD_AbilityContainer_Ex");
+		AbilityContainer_Ex.UpdateAbilitiesArrayFromHistory(HistoryIndex);
+	}
+	else
+	{
+		`log("UITacticalHUD_Enemies_Ex > RealizeTargets using UITacticalHUD_AbilityContainer");
+		AbilityContainer.UpdateAbilitiesArray();
+	}
+	
 	XComPresentationLayer(Movie.Pres).GetTacticalHUD().m_kEnemyTargets.MC.FunctionVoid("MoveDown");
 	XComPresentationLayer(Movie.Pres).GetTacticalHUD().m_kEnemyPreview.MC.FunctionVoid("MoveDownPreview");
 
