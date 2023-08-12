@@ -2,9 +2,6 @@ class UITacticalHUD_AbilityContainer_Ex extends UITacticalHUD_AbilityContainer;
 
 // The last History Index that was realized
 var int LastRealizedIndex;
-var int LastVizHistoryIndex;
-var StateObjectReference LastSelectedUnitRef;
-var bool m_bPopulatingFlash;
 
 simulated function UpdateAbilitiesArray() 
 {
@@ -39,18 +36,4 @@ function protected LatentSubmitGameStateContextCallback(XComGameState GameState)
         // refresh the list of abilities/targets
 		UpdateAbilitiesArrayFromHistory(GameState.HistoryIndex);
     }
-}
-
-simulated function PopulateFlash()
-{
-    if (m_bPopulatingFlash) return;
-    m_bPopulatingFlash = true;
-    ClearTimer(nameof(PopulateFlashDelayed));
-    SetTimer(0.01f, false, nameof(PopulateFlashDelayed));
-}
-
-private function PopulateFlashDelayed()
-{
-    super.PopulateFlash();
-    m_bPopulatingFlash = false;
 }
