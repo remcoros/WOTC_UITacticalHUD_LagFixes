@@ -13,7 +13,7 @@ event OnVisualizationBlockComplete(XComGameState AssociatedGameState)
 	local string sTitle, sBody, sColor;  // Issue #449
 
 	//Track the largest index we have seen so far. This is necessary because the OnVisualizationBlockComplete can complete in an arbitrary order relative to the history
-	if (AssociatedGameState.HistoryIndex <= LastRealizedIndex || !AssociatedGameState.GetContext().bLastEventInChain)
+    if (AssociatedGameState.HistoryIndex <= LastRealizedIndex || !AssociatedGameState.GetContext().bLastEventInChain)
 	{
 		return;
 	}
@@ -62,4 +62,9 @@ simulated function RefreshCounter(XComGameState_AIReinforcementSpawner AISpawner
 	{
 		Hide();
 	}
+}
+
+defaultproperties 
+{
+    LastRealizedIndex = -1;
 }
