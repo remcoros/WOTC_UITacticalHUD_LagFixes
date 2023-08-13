@@ -46,7 +46,7 @@ You [b]MUST[/b] disable one of the ModClassOverrides of 'Extended Information!'.
 
 [h2]Using '[WOTC] Unlimited Ability Icons'? [b]READ THIS:[/b][/h2]
 
-Since recent updates, this mod [b]already includes[b] the functionality of Unlimited Ability Icons. You [b]MUST[/b] remove or disable '[WOTC] Unlimited Ability Icons', you don't need it with this mod. It is safe to remove mid-campaign and from tactical saves.
+Since recent updates, this mod [b]already includes[/b] the functionality of Unlimited Ability Icons. You [b]MUST[/b] remove or disable '[WOTC] Unlimited Ability Icons', you don't need it with this mod. It is safe to remove mid-campaign and from tactical saves.
 
 Thanks -bg- for letting me include the functionality of Unlimited Ability Icons into this mod!
 
@@ -60,4 +60,7 @@ Please report any issues you may find here or on discord (@ExitSign).
 [h1]Credits[/h1]
 
 Thanks to all the modders on the XCOM 2 Modding discord for answering my questions.
-Especially @Iridar and the great guides by @robojumper which helped me get started.
+[list]
+[*]Especially @Iridar and the great guides by @robojumper which helped me get started.
+[*]-bg- for letting me include the unlimited ability icons functionality.
+[/list]
