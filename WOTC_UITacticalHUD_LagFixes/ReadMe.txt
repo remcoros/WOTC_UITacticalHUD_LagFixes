@@ -46,13 +46,9 @@ You [b]MUST[/b] disable one of the ModClassOverrides of 'Extended Information!'.
 
 [h2]Using '[WOTC] Unlimited Ability Icons'? [b]READ THIS:[/b][/h2]
 
-You [b]MUST[/b] disable one of the ModClassOverrides of '[WOTC] Tactical HUD Lag Fixes'. Because 'Unlimited Ability Icons' uses the same MCO as this mod.
-[list]
-[*] Find the XComEngine.ini file for '[WOTC] Tactical HUD Lag Fixes' (steamapps\workshop\content\268500\3018494559\Config\XComEngine.ini).
-[*] Find the line [b]+ModClassOverrides=(BaseGameClass="UITacticalHUD_AbilityContainer", ModClass="UITacticalHUD_AbilityContainer_Ex")[/b]
-[*] Remove it, or comment it (put a [b];[/b] in front of it)
-[*] You don't get the performance fix for the ability bar, but still all the others.
-[/list]
+Since recent updates, this mod [b]already includes[b] the functionality of Unlimited Ability Icons. You [b]MUST[/b] remove or disable '[WOTC] Unlimited Ability Icons', you don't need it with this mod. It is safe to remove mid-campaign and from tactical saves.
+
+Thanks -bg- for letting me include the functionality of Unlimited Ability Icons into this mod!
 
 [h1]Issues[/h1]
 
