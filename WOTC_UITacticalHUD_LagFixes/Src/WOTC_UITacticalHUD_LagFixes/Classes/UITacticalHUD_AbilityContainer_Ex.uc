@@ -2,7 +2,6 @@ class UITacticalHUD_AbilityContainer_Ex extends UITacticalHUD_AbilityContainer;
 
 // The last History Index that was realized
 var int LastRealizedIndex;
-var bool m_arrAbilitiesChanged;
 var array<UITacticalHUD_NestedAbilities> AdditionalPanel;
 
 simulated function int GetNumberOfAbilityItems()
@@ -92,7 +91,7 @@ simulated function RefreshTutorialShine(optional bool bIgnoreMenuStatus = false)
 
 simulated function UpdateAbilitiesArray() 
 {
-    UpdateAbilitiesArrayFromHistory(`XCOMHISTORY.GetCurrentHistoryIndex());
+    UpdateAbilitiesArrayFromHistory(-1);
 }
 
 simulated function UpdateAbilitiesArrayFromHistory(optional int HistoryIndex = -1)
@@ -159,7 +158,7 @@ function UpdateAbilitiesArrayImproved()
 
 	arrCommandAbilities.Sort(SortAbilities);
 	m_arrAbilities.Sort(SortAbilities);
-	m_arrAbilitiesChanged = true;
+	
 	PopulateFlash();
 
 	if (m_iCurrentIndex < 0)
@@ -212,14 +211,6 @@ function UpdateAbilitiesArrayImproved()
 }
 
 simulated function PopulateFlash()
-{
-	if (!m_arrAbilitiesChanged && self.bIsVisible) return;
-
-	m_arrAbilitiesChanged = false;
-	PopulateFlashImproved();
-}
-
-simulated function PopulateFlashImproved()
 {
 	local int i, len, lastX;
 	local AvailableAction AvailableActionInfo; //Represents an action that a unit can perform. Usually tied to an ability.
