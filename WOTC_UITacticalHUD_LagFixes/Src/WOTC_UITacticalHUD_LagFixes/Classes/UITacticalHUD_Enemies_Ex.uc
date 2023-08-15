@@ -3,9 +3,9 @@ class UITacticalHUD_Enemies_Ex extends UITacticalHUD_Enemies;
 // For 'Extended Information!'
 `include(WOTC_UITacticalHUD_LagFixes\Src\ModConfigMenuAPI\MCM_API_CfgHelpers.uci)
 
-var bool bEnableEnemyPreviewExtended;
-var bool TH_AIM_ASSIST;
-var bool DISPLAY_MISS_CHANCE;
+var private bool bEnableEnemyPreviewExtended;
+var private bool TH_AIM_ASSIST;
+var private bool DISPLAY_MISS_CHANCE;
 
 // Start Issue #1233 wrapper for sort delegate
 struct StateObjectReferenceHitChange
@@ -15,10 +15,13 @@ struct StateObjectReferenceHitChange
 	var int HitChance;
 };
 
-var array<StateObjectReferenceHitChange> m_arrTargetsUnsorted;
+var private array<StateObjectReferenceHitChange> m_arrTargetsUnsorted;
 // End Issue #1233
 
-var int LastActiveUnitObjectID;
+var private int LastActiveUnitObjectID;
+
+// UITacticalHUD_EnemyPreview support
+var private bool m_bEnemyPreviewHackApplied;
 
 simulated function OnInit()
 {
@@ -40,6 +43,10 @@ simulated function OnInit()
 	// But since this is a global event listener, it is called A LOT and we redraw unnecessarily often.
 	// Instead, we do not listen for the global event, but instead redraw when the ability was accepted in UITacticalHUD_AbilityArray
 	//EventManager.RegisterForEvent(ThisObj, 'AbilityActivated', OnAbilityActivated, ELD_OnVisualizationBlockCompleted);
+	
+	// ExitSign: We use this to reset LastActiveUnitObjectID, so that when OnActiveUnitChanged is triggered when the player turn begins, we force a 
+	// redraw of the ability array
+	EventManager.RegisterForEvent(ThisObj, 'PlayerTurnBegun', OnPlayerTurnBegun, ELD_OnStateSubmitted);
 
 	InitializeTooltipData();
 
@@ -53,6 +60,14 @@ simulated function OnInit()
 function EventListenerReturn OnReEvaluationEvent(Object EventData, Object EventSource, XComGameState GameState, Name Event, Object CallbackData)
 {
 	RealizeTargets(GameState.HistoryIndex);
+
+	return ELR_NoInterrupt;
+}
+
+function EventListenerReturn OnPlayerTurnBegun(Object EventData, Object EventSource, XComGameState GameState, Name Event, Object CallbackData)
+{
+	// Reset it, so that next time a unit is selected (at player turn begin), we force it to be shown
+	LastActiveUnitObjectID = -1;
 
 	return ELR_NoInterrupt;
 }
@@ -72,10 +87,33 @@ event OnVisualizationBlockComplete(XComGameState AssociatedGameState)
 	}
 }
 
-event OnVisualizationIdle();
+// ExitSign: we can't MCO UITacticalHUD_EnemyPreview due to 'Enemy Preview Extended' mod
+// and base classes are unaffected by MCOs, so our changes to UITacticalHUD_Enemies don't work.
+// So we're going to use a different method here, look the other way now 8-)
+event OnVisualizationIdle()
+{
+	local UITacticalHUD_Enemies EnemyPreview;
+	local X2EventManager EventManager;
+
+	if (m_bEnemyPreviewHackApplied) return;
+
+	EnemyPreview = UITacticalHUD(Screen).m_kEnemyPreview;
+	if (EnemyPreview == none) return;
+
+	EventManager = `XEVENTMGR;
+
+	// These all call 'RealizeTargets', which refreshes the ability array unnecessarily
+	// our RealizeTargets handles the call to RealizeTargets of UITacticalHUD_EnemyPreview instead
+	EventManager.UnRegisterFromEvent(EnemyPreview, 'ScamperBegin');
+	EventManager.UnRegisterFromEvent(EnemyPreview, 'UnitDied');
+	EventManager.UnRegisterFromEvent(EnemyPreview, 'AbilityActivated');
+	`XCOMVISUALIZATIONMGR.RemoveObserver(EnemyPreview);
+
+	m_bEnemyPreviewHackApplied = true;
+}
 
 event OnActiveUnitChanged(XComGameState_Unit NewActiveUnit)
-{	
+{
 	if (LastActiveUnitObjectID != NewActiveUnit.ObjectID)
 	{
 		RealizeTargets(-1);
@@ -135,6 +173,13 @@ simulated function RealizeTargets(int HistoryIndex, bool bDontRefreshVisibleEnem
 	if( !bDontRefreshVisibleEnemies )
 	{
 		UpdateVisibleEnemies(HistoryIndex);
+	}
+
+	// This is the only thing RealizeTargets of UITacticalHUD_EnemyPreview does. We do not want to refresh the
+	// ability array and UpdateVisibleEnemies was made empty on purpose.
+	if (m_bEnemyPreviewHackApplied)
+	{
+		UITacticalHUD(Screen).m_kEnemyPreview.ClearSelectedEnemy();
 	}
 }
 
@@ -304,7 +349,7 @@ simulated function int GetHitChanceForObjectRefExtended(StateObjectReference Tar
 	local XComGameState_Ability AbilityState;
 	local int AimBonus, HitChance;
 
-	//`log(" UITacticalHUD_Enemies_Ex > GetHitChanceForObjectRefExtended TH_AIM_ASSIST=" $ GetTH_AIM_ASSIST() $ " DISPLAY_MISS_CHANCE=" $ getDISPLAY_MISS_CHANCE());
+	//`log("UITacticalHUD_Enemies_Ex > GetHitChanceForObjectRefExtended TH_AIM_ASSIST=" $ GetTH_AIM_ASSIST() $ " DISPLAY_MISS_CHANCE=" $ getDISPLAY_MISS_CHANCE());
 
 	//If a targeting action is active and we're hoving over the enemy that matches this action, then use action percentage for the hover  
 	TargetingMethod = XComPresentationLayer(screen.Owner).GetTacticalHUD().GetTargetingMethod();
