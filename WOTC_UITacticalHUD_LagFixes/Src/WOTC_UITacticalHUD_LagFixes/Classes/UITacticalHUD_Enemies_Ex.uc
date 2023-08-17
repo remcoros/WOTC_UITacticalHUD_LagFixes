@@ -38,7 +38,7 @@ simulated function OnInit()
 	EventManager.RegisterForEvent(ThisObj, 'ScamperBegin', OnReEvaluationEvent, ELD_OnVisualizationBlockCompleted);
 	EventManager.RegisterForEvent(ThisObj, 'UnitDied', OnReEvaluationEvent, ELD_OnVisualizationBlockCompleted);
 
-	// ExitSign: this seems to be only used to redraw the abbility array right after when it is activated, without out, we redraw too late
+	// ExitSign: this seems to be only used to redraw the abbility array right after when it is activated, without it, we redraw too late
 	// and the bar looks active while the abilities animations are running.
 	// But since this is a global event listener, it is called A LOT and we redraw unnecessarily often.
 	// Instead, we do not listen for the global event, but instead redraw when the ability was accepted in UITacticalHUD_AbilityArray
@@ -161,10 +161,6 @@ simulated function RealizeTargets(int HistoryIndex, bool bDontRefreshVisibleEnem
 		AbilityContainer.UpdateAbilitiesArray();
 	}
 
-	// ExitSign: Just don't update the UI at all here, not sure about the MoveDown calls
-	// disabled for now, as this seems to not update other ui elements properly
-	// UpdateAbilitiesArrayWithoutUI();
-
 	// ExitSign: don't know why this is needed here, but it is done in base also, so keeping it for now
 	XComPresentationLayer(Movie.Pres).GetTacticalHUD().m_kEnemyTargets.MC.FunctionVoid("MoveDown");
 	XComPresentationLayer(Movie.Pres).GetTacticalHUD().m_kEnemyPreview.MC.FunctionVoid("MoveDownPreview");
@@ -181,42 +177,6 @@ simulated function RealizeTargets(int HistoryIndex, bool bDontRefreshVisibleEnem
 	{
 		UITacticalHUD(Screen).m_kEnemyPreview.ClearSelectedEnemy();
 	}
-}
-
-// Very ugly hack to update m_arrAbilities of UITacticalHUD_AbilityContainer without all the UI updates,
-// we need to do this before 'UpdateVisibleEnemies', because that uses the currently selected ability in 
-// its hitchance calculations, which relies on m_arrAbilities to be in order.
-private function UpdateAbilitiesArrayWithoutUI() 
-{
-	local int i, len;
-	local X2GameRuleset Ruleset;
-	local GameRulesCache_Unit UnitInfoCache;
-	local AvailableAction AbilityAvailableInfo;
-	local UITacticalHUD_AbilityContainer AbilityContainer;
-
-	AbilityContainer = XComPresentationLayer(Movie.Pres).GetTacticalHUD().m_kAbilityHUD;
-
-	//Clear out the array 
-	AbilityContainer.m_arrAbilities.Length = 0;
-
-	// Loop through all abilities.
-	Ruleset = `XCOMGAME.GameRuleset;
-	Ruleset.GetGameRulesCache_Unit(XComTacticalController(PC).GetActiveUnitStateRef(), UnitInfoCache);
-
-	len = UnitInfoCache.AvailableActions.Length;
-	for(i = 0; i < len; ++i)
-	{	
-		// Obtain unit's ability.
-		AbilityAvailableInfo = UnitInfoCache.AvailableActions[i];
-
-		if(AbilityContainer.ShouldShowAbilityIcon(AbilityAvailableInfo))
-		{
-			//Add to our list of abilities 
-			AbilityContainer.m_arrAbilities.AddItem(AbilityAvailableInfo);
-		}
-	}
-
-	AbilityContainer.m_arrAbilities.Sort(AbilityContainer.SortAbilities);
 }
 
 // The same implementation as super, but it uses cached values for sorting
