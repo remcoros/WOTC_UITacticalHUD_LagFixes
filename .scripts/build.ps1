@@ -18,6 +18,12 @@ git submodule add https://github.com/X2CommunityCore/X2WOTCCommunityHighlander.g
 # Uncomment the next line to enable building against Highlander.
 $builder.IncludeSrc("$srcDirectory\X2WOTCCommunityHighlander\X2WOTCCommunityHighlander\Src")
 
+Write-Host "Verifying project file..."
+&"$ScriptDirectory\X2ProjectGenerator.exe" @("$srcDirectory\WOTC_UITacticalHUD_LagFixes", "--exclude-contents", "--verify-only")
+if ($LASTEXITCODE -ne 0) {
+    ThrowFailure "Errors in project file."
+}
+
 switch ($config)
 {
     "debug" {
