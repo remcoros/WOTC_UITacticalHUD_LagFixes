@@ -220,7 +220,7 @@ simulated function PopulateFlash()
 	// Only populate flash when the abilities are changed, or when the UI was not visible
 	isVisible = UITacticalHUD(Screen).bIsVisible && self.bIsVisible;
 
-	if (!m_arrAbilitiesChanged && self.bIsVisible) return;
+	if (!m_arrAbilitiesChanged && isVisible) return;
 
 	m_arrAbilitiesChanged = false;
 	PopulateFlashImproved();
