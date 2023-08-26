@@ -308,15 +308,15 @@ simulated function int GetHitChanceForObjectRef(StateObjectReference TargetRef)
 	return super.GetHitChanceForObjectRef(TargetRef);
 }
 
-// For 'Extended Information!'
-simulated function int GetHitChanceForObjectRefExtended(StateObjectReference TargetRef) {
+// For 'Extended Information!' (discord version)
+simulated function int GetHitChanceForObjectRefExtended(StateObjectReference TargetRef) 
+{
 	local AvailableAction Action;
+	local AvailableTarget kTarget;
 	local ShotBreakdown Breakdown;
 	local X2TargetingMethod TargetingMethod;
 	local XComGameState_Ability AbilityState;
-	local int AimBonus, HitChance;
-
-	//`log("UITacticalHUD_Enemies_Ex > GetHitChanceForObjectRefExtended TH_AIM_ASSIST=" $ GetTH_AIM_ASSIST() $ " DISPLAY_MISS_CHANCE=" $ getDISPLAY_MISS_CHANCE());
+	local int HitChance;
 
 	//If a targeting action is active and we're hoving over the enemy that matches this action, then use action percentage for the hover  
 	TargetingMethod = XComPresentationLayer(screen.Owner).GetTacticalHUD().GetTargetingMethod();
@@ -337,20 +337,15 @@ simulated function int GetHitChanceForObjectRefExtended(StateObjectReference Tar
 
 	if(AbilityState != none)
 	{
-		AbilityState.LookupShotBreakdown(AbilityState.OwnerStateObject, TargetRef, AbilityState.GetReference(), Breakdown);
+		kTarget.PrimaryTarget = TargetRef;
+		class'HitCalcLib'.static.GetShotBreakdownDiffAdjust(AbilityState, kTarget, Breakdown);
 		
 		if(!Breakdown.HideShotBreakdown)
 		{
-			AimBonus = 0;
 			HitChance = Breakdown.bIsMultishot ? Breakdown.MultiShotHitChance : Breakdown.FinalHitChance;
-			if (GetTH_AIM_ASSIST()) {
-				AimBonus =WOTC_DisplayHitChance_UITacticalHUD_ShotWings(UITacticalHUD(Screen).m_kShotInfoWings).GetModifiedHitChance(AbilityState, HitChance);
-			}
 
 			if (getDISPLAY_MISS_CHANCE())
-				HitChance = 100 - (AimBonus + HitChance);
-			else
-				HitChance = AimBonus + HitChance;
+				HitChance = 100 - HitChance;
 				
 			return Clamp(HitChance, 0, 100);
 	    }
