@@ -1,9 +1,10 @@
 class UITacticalHUD_Enemies_Ex extends UITacticalHUD_Enemies;
 
 // For 'Extended Information!'
-`include(WOTC_UITacticalHUD_LagFixes\Src\ModConfigMenuAPI\MCM_API_CfgHelpers.uci)
+`include(WOTC_UITacticalHUD_LagFixes\Src\WOTC_UITacticalHUD_LagFixes\Classes\MCM_API_CfgHelpers.uci)
 
 var private bool bEnableEnemyPreviewExtended;
+
 var private bool TH_AIM_ASSIST;
 var private bool DISPLAY_MISS_CHANCE;
 
@@ -27,7 +28,7 @@ simulated function OnInit()
 {
 	local X2EventManager EventManager;
 	local Object ThisObj;
-
+	
 	// skip the OnInit of UITacticalHUD_Enemies, but we still need to call UIPanel.OnInit
 	super(UIPanel).OnInit();
 
@@ -92,10 +93,16 @@ event OnVisualizationBlockComplete(XComGameState AssociatedGameState)
 // So we're going to use a different method here, look the other way now 8-)
 event OnVisualizationIdle()
 {
+	if (!m_bEnemyPreviewHackApplied)
+	{
+		ApplyEnemyPreviewHack();
+	}
+}
+
+private function ApplyEnemyPreviewHack()
+{
 	local UITacticalHUD_Enemies EnemyPreview;
 	local X2EventManager EventManager;
-
-	if (m_bEnemyPreviewHackApplied) return;
 
 	EnemyPreview = UITacticalHUD(Screen).m_kEnemyPreview;
 	if (EnemyPreview == none) return;
