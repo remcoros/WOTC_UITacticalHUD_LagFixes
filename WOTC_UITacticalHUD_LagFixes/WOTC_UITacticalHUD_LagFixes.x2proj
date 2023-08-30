@@ -18,10 +18,10 @@ tags= War of the Chosen, UI, Gameplay</Description>
   </PropertyGroup>
   <Import Project="$(BuildCommonRoot)XCOM2.targets" />
   <ItemGroup>
-    <Folder Include="Config\" />
-    <Folder Include="Src\" />
-    <Folder Include="Src\WOTC_UITacticalHUD_LagFixes\" />
-    <Folder Include="Src\WOTC_UITacticalHUD_LagFixes\Classes\" />
+    <Folder Include="Config" />
+    <Folder Include="Src" />
+    <Folder Include="Src\WOTC_UITacticalHUD_LagFixes" />
+    <Folder Include="Src\WOTC_UITacticalHUD_LagFixes\Classes" />
     <Content Include="LICENSE.txt" />
     <Content Include="ModPreview.jpg" />
     <Content Include="PublishedFileId.ID" />
@@ -30,8 +30,8 @@ tags= War of the Chosen, UI, Gameplay</Description>
     <Content Include="Config\XComEditor.ini" />
     <Content Include="Config\XComEngine.ini" />
     <Content Include="Config\XComGame.ini" />
-    <Content Include="Src\WOTC_UITacticalHUD_LagFixes\Classes\MCM_API_CfgHelpers.uci" />
     <Content Include="Src\WOTC_UITacticalHUD_LagFixes\Classes\AbilityTooltipDelegateHook.uc" />
+    <Content Include="Src\WOTC_UITacticalHUD_LagFixes\Classes\MCM_API_CfgHelpers.uci" />
     <Content Include="Src\WOTC_UITacticalHUD_LagFixes\Classes\UIObjectiveList_Ex.uc" />
     <Content Include="Src\WOTC_UITacticalHUD_LagFixes\Classes\UISL_TooltipPatcher.uc" />
     <Content Include="Src\WOTC_UITacticalHUD_LagFixes\Classes\UITacticalHUD_AbilityContainer_Ex.uc" />

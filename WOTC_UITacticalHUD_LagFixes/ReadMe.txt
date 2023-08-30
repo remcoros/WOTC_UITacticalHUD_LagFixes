@@ -3,7 +3,6 @@
 - Greatly reduce number of ability array refreshes while visualizations are running. Huge cause of frame stutters, especially noticable when also using the 'Cost Based Ability Colors' mod.
 - Cache hitchance calculations before sorting them, reducing the number of needed calculations even further.
 - Reduce the number of unnecessary refreshes of the 'Objectives list' and 'Turn counter' HUD elements.
-- (TODO) Reduce the number of unnecessary refreshes of Unit flags.
 
 =====
 STEAM Description: [WOTC] Tactical HUD Lag Fixes
@@ -18,7 +17,6 @@ Various performance fixes in the Tactical HUD:
 [*] Greatly reduce number of ability array refreshes while visualizations are running. Huge cause of frame stutters, especially noticable when also using the 'Cost Based Ability Colors' mod.
 [*] Cache hitchance calculations before sorting them, reducing the number of needed calculations even further.
 [*] Reduce the number of unnecessary refreshes of the 'Objectives list' and 'Turn counter' HUD elements.
-[*] (TODO) Reduce the number of unnecessary refreshes of Unit flags.
 [/list]
 
 [h1]Compatibility[/h1]
@@ -46,14 +44,11 @@ You [b]MUST[/b] disable one of the ModClassOverrides of 'Extended Information!'.
 
 [h2]Using '[WOTC] Unlimited Ability Icons'? [b]READ THIS:[/b][/h2]
 
-Since recent updates, this mod [b]already includes[/b] the functionality of Unlimited Ability Icons. You [b]MUST[/b] remove or disable '[WOTC] Unlimited Ability Icons', you don't need it with this mod. It is safe to remove mid-campaign and from tactical saves.
+This mod [b]already includes[/b] Unlimited Ability Icons. You [b]MUST[/b] remove or disable '[WOTC] Unlimited Ability Icons', you don't need it with this mod. It is safe to remove mid-campaign and from tactical saves.
 
 Thanks -bg- for letting me include the functionality of Unlimited Ability Icons into this mod!
 
 [h1]Issues[/h1]
-
-Hopefully, these fixes can be merged into the Community Highlander at some point. Before that, these 'fixes' need more real-world testing.
-That's why I pushed out this mod (my first), to gather feedback and fix potential issues before making their way into CHL.
 
 Please report any issues you may find here or on discord (@ExitSign).
 
